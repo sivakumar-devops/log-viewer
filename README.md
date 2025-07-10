@@ -53,53 +53,97 @@ Ensure you have these installed on your system:
 
 ### Steps to Build and Deploy the Application
 
-1. **Clone the custom deployment repository**  
+1. **Clone the Deployment Repository**:
+
+   Clone the below given custom deployment repository to get the preconfigured Docker and setup files:
+
    ```bash
    git clone https://github.com/sivakumar-devops/log-viewer
    cd log-viewer
    ```
-2. Create a new Laravel project
-On your host machine, run:
+2. **Create a New Laravel Project**:
+
+    On your host machine, create a new Laravel application:
+
     ```bash
     composer create-project laravel/laravel my-log-viewer-app
     cd my-log-viewer-app
     ```
-3. Install the log-viewer package
+    ![create project](images/create-project.png)
+
+3. **Install the log-viewer package**:
+
+    Add the opcodesio/log-viewer package to your Laravel project:
+
     ```bash
     composer require opcodesio/log-viewer
     ```
-4. Copy the docker folder, Dockerfile, and docker-compose.yaml from the cloned repository (step 1) into your new Laravel project (my-log-viewer-app).
+    ![log-viewer package](images/log-viewer-package.png)
 
-5. Generate the application key
+4. Copy the following files and folder from the cloned repository (from step 1) into your new Laravel project (my-log-viewer-app):
+
+    `docker/ folder`
+
+    `Dockerfile`
+
+    `docker-compose.yaml`
+
+5. **Generate the application key**:
+
+    Inside your Laravel project directory, generate the application key:
+
     ```bash
     php artisan key:generate --show
     ```
-6. Copy the generated key and update it in the .env file or docker-compose.yaml as needed.
 
-7. In docker-compose.yaml, set the volume path to your Bold BI application logs.
-Example:
+    ![generate key](images/generate-key.png)
+
+6. **Configure the App Key**:
+
+    Copy the generated key and update it in your .env file or docker-compose.yaml under the APP_KEY environment variable.
+
+    ![update key](images/update-key.png)
+
+7. **Update Volume Path for Log Files**:
+    In docker-compose.yaml, configure the volume to point to your actual Bold BI logs directory:
+    Example:
+
     ```bash
     volumes:
     - /path/to/boldbi/logs:/var/www/html/storage/logs-files
     ```
 
-8. Build and run the container
+    ![volume path update](images/volume-path-update.png)
+
+8. **Build and Start the Container**: 
+
+    Run the following command to build the image and start the container in detached mode:
+
     ```bash
     docker-compose up --build -d
     ```
-9. To access the log viewer Open your browser and go to:
+
+    ![docker compose up](images/docker-compose-up-2.png)
+
+    ![application up](images/application-up.png)
+
+9. **Access the Log Viewer**:
+
+    Open your browser and navigate to:
 
     ```bash
     http://localhost:8080/log-viewer
     ```
+    ![application](images/application.png)
 
 **Notes:**
 
-- Ensure your logs directory has the appropriate read permissions for the container.
+- Ensure that the mapped logs directory `(/path/to/boldbi/logs)` has appropriate read permissions for the container.
 
 - To stop the container, use:
-        ```bash
+
+    ```bash
         docker-compose down 
-        ```
+    ```
 - You can customize the Dockerfile and docker-compose settings as needed for your environment.
 
