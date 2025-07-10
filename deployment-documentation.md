@@ -24,7 +24,7 @@ You only need to specify the **path to your Bold BI application logs** in the `d
    ```bash
    curl -o docker-compose.yaml https://raw.githubusercontent.com/sivakumar-devops/log-viewer/refs/heads/main/deployment/docker-compose.yaml
     ```
-    ![download docker-compose file](images/download-dockercomposefile.png)
+    ![download docker-compose file](images/download-dockercomposefile.png)    
 
 2. **Update the logs path**:
 
@@ -55,7 +55,7 @@ You only need to specify the **path to your Bold BI application logs** in the `d
     http://localhost:8080/log-viewer
     ```
     ![application](images/application.png)
-    
+
     As you see in the image below, you can view the logs through the application interface:
 
     ![error log](images/error-log.png)
