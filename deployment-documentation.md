@@ -21,7 +21,7 @@ You only need to specify the **path to your Bold BI application logs** in the `d
    Use the following command to fetch the compose file:
 
    ```bash
-   curl -o docker-compose.yaml https://raw.githubusercontent.com/sivakumar-devops/log-viewer/refs/heads/main/docker-compose.yaml
+   curl -o docker-compose.yaml https://raw.githubusercontent.com/sivakumar-devops/log-viewer/refs/heads/main/deployment/docker-compose.yaml
     ```
 2. Update the logs path:
 Open the docker-compose.yaml file in a text editor and set the path to your Bold BI application logs. Example:
