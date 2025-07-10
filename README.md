@@ -55,7 +55,7 @@ Ensure you have these installed on your system:
 
 1. **Clone the Deployment Repository**:
 
-   Clone the below given custom deployment repository to get the preconfigured Docker and setup files:
+   Clone the below given deployment repository to get the preconfigured Docker and setup files:
 
    ```bash
    git clone https://github.com/sivakumar-devops/log-viewer
@@ -73,7 +73,7 @@ Ensure you have these installed on your system:
 
 3. **Install the log-viewer package**:
 
-    Add the opcodesio/log-viewer package to your Laravel project:
+    Add the `opcodesio/log-viewer` package to your Laravel project:
 
     ```bash
     composer require opcodesio/log-viewer
@@ -105,6 +105,7 @@ Ensure you have these installed on your system:
     ![update key](images/update-key.png)
 
 7. **Update Volume Path for Log Files**:
+
     In docker-compose.yaml, configure the volume to point to your actual Bold BI logs directory:
     Example:
 
