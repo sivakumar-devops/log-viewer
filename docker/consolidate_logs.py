@@ -4,10 +4,10 @@
 🚀 Batch log consolidator for multiple app folders
 ==================================================
 ✅ Groups multiline log entries under one timestamp
+✅ Includes source folder name in output:
+     [YYYY-MM-DD HH:MM:SS] local.LEVEL: app_name: message
 ✅ Supports multiple input filename patterns
 ✅ Assigns today's date 00:00:00 for unmatched blocks
-✅ Outputs Laravel-style logs:
-   [YYYY-MM-DD HH:MM:SS] local.LEVEL: message
 """
 
 import os
@@ -53,9 +53,10 @@ header_regex = re.compile(
     r'^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d+\s+\[\d+\]\s+\w+\s+(.*)'
 )
 
-def parse_blocks(lines, forced_level):
+def parse_blocks(lines, forced_level, app_name):
     """
     Groups lines into blocks by header lines.
+    Includes app_name prefix in messages.
     Returns list of (datetime, formatted log entry) tuples.
     """
     blocks = []
@@ -80,11 +81,11 @@ def parse_blocks(lines, forced_level):
                 current_timestamp = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
                 timestamp_str = current_timestamp.strftime('%Y-%m-%d 00:00:00')
                 message = f'Unmatched header: {line.strip()}'
-            # First line of block in Laravel format
-            first_line = f'[{timestamp_str}] {APP_ENV}.{forced_level}: {message}'
+            # First line with app_name prefix
+            first_line = f'[{timestamp_str}] {APP_ENV}.{forced_level}: {app_name}: {message}'
             current_block_lines = [first_line]
         else:
-            # Indented / non-header lines → continuation
+            # Indented / continuation lines
             if current_block_lines:
                 current_block_lines.append(line)
             else:
@@ -92,7 +93,7 @@ def parse_blocks(lines, forced_level):
                 today = datetime.today().strftime('%Y-%m-%d')
                 fallback_time = f'{today} 00:00:00'
                 current_timestamp = datetime.strptime(fallback_time, '%Y-%m-%d %H:%M:%S')
-                unmatched_line = f'[{fallback_time}] {APP_ENV}.{forced_level}: Unmatched line: {line.strip()}'
+                unmatched_line = f'[{fallback_time}] {APP_ENV}.{forced_level}: {app_name}: Unmatched line: {line.strip()}'
                 current_block_lines = [unmatched_line]
 
     # flush final block
@@ -126,7 +127,7 @@ for log_type, config in LOG_TYPES.items():
             print(f"✅ Reading: {filepath}")
             with open(filepath, 'r') as f:
                 lines = f.readlines()
-                blocks = parse_blocks(lines, config['level'])
+                blocks = parse_blocks(lines, config['level'], folder)
                 all_entries.extend(blocks)
 
     # Sort by timestamp
